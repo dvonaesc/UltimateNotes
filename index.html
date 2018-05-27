@@ -5,10 +5,10 @@
     <title>Ultimate Notes</title>
     <link rel="stylesheet"
           type="text/css" href="css/style.css"
-          title="default" />
+          title="default"/>
     <link rel="alternate stylesheet"
           type="text/css" href="css/alternative.css"
-          title="alternate" />
+          title="alternate"/>
 </head>
 <body>
 <script type="text/javascript" src="main.js"></script>
@@ -17,5 +17,44 @@
 </a>
 <a href="#" onclick="setActiveStyleSheet('default');return;">Change style to default</a>
 <a href="#" onclick="setActiveStyleSheet('alternate');return;">Change style to alternative</a>
+
+<h1>Todo</h1>
+<ul id="todo"></ul>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+<script id="todo-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <li>
+        <h3>{{this.title}}</h3>
+        <p>{{this.detail}}</p>
+        <p>{{this.importance}}</p>
+        <button onclick="removeNote({{this.id}})">Delete</button>
+    </li>
+    {{/each}}
+</script>
+<script>
+
+    function removeNote(id)
+    {
+        let items = JSON.parse(localStorage.getItem('notes'));
+       items = items.filter(function(i) {
+            return i.id != id
+        });
+        localStorage.setItem('notes', JSON.stringify(items));
+        renderItems();
+    }
+
+    function getAllNotes() {
+        return JSON.parse(localStorage.getItem('notes'));
+    }
+
+    const createSongsHtml = Handlebars.compile(document.getElementById("todo-template").innerText);
+
+    function renderItems() {
+        var items = getAllNotes();
+        document.getElementById("todo").innerHTML = createSongsHtml(items);
+    }
+
+    window.onload = renderItems;
+</script>
 </body>
 </html>

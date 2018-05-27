@@ -50,10 +50,13 @@ function readCookie(name) {
     return null;
 }
 
+
+
 window.onload = function(e) {
     var cookie = readCookie("style");
     var title = cookie ? cookie : getPreferredStyleSheet();
     setActiveStyleSheet(title);
+
 }
 
 window.onunload = function(e) {
