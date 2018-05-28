@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ultimate Notes</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet"
           type="text/css" href="css/style.css"
           title="default"/>
@@ -11,50 +12,34 @@
           title="alternate"/>
 </head>
 <body>
-<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="js/styleSwitcher.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 <a href="edit.html">
     <button>Neuer Task</button>
 </a>
 <a href="#" onclick="setActiveStyleSheet('default');return;">Change style to default</a>
 <a href="#" onclick="setActiveStyleSheet('alternate');return;">Change style to alternative</a>
 
-<h1>Todo</h1>
+<h1>Todo List</h1>
+<div id="myBtnContainer">
+    <button class="btn active" onclick="filterSelection('finish')"> By Finish Date</button>
+    <button class="btn" onclick="filterSelection('creation')"> By Creation Date</button>
+    <button class="btn" onclick="filterSelection('importance')"> By Importance</button>
+</div>
+
 <ul id="todo"></ul>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+
 <script id="todo-template" type="text/x-handlebars-template">
     {{#each this}}
     <li>
         <h3>{{this.title}}</h3>
         <p>{{this.detail}}</p>
         <p>{{this.importance}}</p>
+        <p>{{this.dueDate}}</p>
         <button onclick="removeNote({{this.id}})">Delete</button>
     </li>
     {{/each}}
-</script>
-<script>
-
-    function removeNote(id)
-    {
-        let items = JSON.parse(localStorage.getItem('notes'));
-       items = items.filter(function(i) {
-            return i.id != id
-        });
-        localStorage.setItem('notes', JSON.stringify(items));
-        renderItems();
-    }
-
-    function getAllNotes() {
-        return JSON.parse(localStorage.getItem('notes'));
-    }
-
-    const createSongsHtml = Handlebars.compile(document.getElementById("todo-template").innerText);
-
-    function renderItems() {
-        var items = getAllNotes();
-        document.getElementById("todo").innerHTML = createSongsHtml(items);
-    }
-
-    window.onload = renderItems;
 </script>
 </body>
 </html>

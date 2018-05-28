@@ -21,7 +21,7 @@ function init()
     const saveButton = document.getElementById('save-button');
 
     saveButton.onclick = function () {
-        let newNote = {  'title': title.value, 'detail': detail.value, 'dueDate': dueDate.value,  'done': false, 'created': Date.now() };
+        let newNote = {  'title': title.value, 'detail': detail.value, 'dueDate': dueDate.value,  'done': false, 'created': Date.now().toLocaleString() };
         addNewNote(newNote);
         window.location.href="index.html";
     };

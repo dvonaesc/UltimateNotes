@@ -1,5 +1,4 @@
 
-
 function setActiveStyleSheet(title) {
     var i, a, main;
     for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
@@ -11,7 +10,7 @@ function setActiveStyleSheet(title) {
 }
 
 function getActiveStyleSheet() {
-    var i, a;
+    let i, a;
     for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
         if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title") && !a.disabled) return a.getAttribute("title");
     }
@@ -52,18 +51,18 @@ function readCookie(name) {
 
 
 
-window.onload = function(e) {
-    var cookie = readCookie("style");
-    var title = cookie ? cookie : getPreferredStyleSheet();
+window.onload = function() {
+    let cookie = readCookie("style");
+    let title = cookie ? cookie : getPreferredStyleSheet();
     setActiveStyleSheet(title);
 
 }
 
-window.onunload = function(e) {
-    var title = getActiveStyleSheet();
+window.onunload = function() {
+    let title = getActiveStyleSheet();
     createCookie("style", title, 365);
 }
 
-var cookie = readCookie("style");
-var title = cookie ? cookie : getPreferredStyleSheet();
+let cookie = readCookie("style");
+let title = cookie ? cookie : getPreferredStyleSheet();
 setActiveStyleSheet(title);
