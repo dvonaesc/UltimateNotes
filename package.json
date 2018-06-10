@@ -1,0 +1,14 @@
+{
+  "name": "Ulitmate Note",
+  "version": "1.0.0",
+  "description": "Static webserver",
+  "main": "server.js",
+  "author": "Dario Vonaesch",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^6.1.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}

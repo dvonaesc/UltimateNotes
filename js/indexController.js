@@ -13,6 +13,36 @@ import {default as model} from './notesModel.js';
         }
     }
 
+    $(document).on("click", "input[todo-item-id]", handleEditNoteClick);
+    $(document).on("click", "input[todo-item-id]", handleDoneNoteClick);
+
+
+    function handleEditNoteClick(event) {
+        let target = $(event.target);
+        let foodId = Number(target.data("food-id"));
+
+        if (!isNaN(foodId)) {
+            target.prop("disabled", true);
+            foodService.orderFoodById(foodId, function () {
+                showFood();
+                target.prop("disabled", false);
+            });
+        }
+    }
+
+    function handleDoneNoteClick(event) {
+        let target = $(event.target);
+        let foodId = Number(target.data("food-id"));
+
+        if (!isNaN(foodId)) {
+            target.prop("disabled", true);
+            foodService.orderFoodById(foodId, function () {
+                showFood();
+                target.prop("disabled", false);
+            });
+        }
+    }
+
     let notesTemplateProcessor = null;
 
     const notesModel = new model.NotesModel();
