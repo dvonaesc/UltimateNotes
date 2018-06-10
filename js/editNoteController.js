@@ -1,15 +1,7 @@
-
-
-
- function loadAllNotes() {
-    return JSON.parse(localStorage.getItem('notes'))|| [];
-}
+import {default as notesModel} from 'notesModel.js';
 
  function addNewNote(note) {
-     const allNotes = this.loadAllNotes();
-     note.id = allNotes.length;
-     allNotes.push(note);
-     localStorage.setItem('notes', JSON.stringify(allNotes));
+     notesModel.addNewNote(note);
 }
 
 function init()

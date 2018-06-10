@@ -14,6 +14,7 @@ body {
     max-width: 720px;
     margin: auto;
     background-color: #F5F5F5;
+    font-family: monospace;
 
 }
 .btn {
@@ -40,7 +41,6 @@ button {
     margin: 10px;
     padding: 0 20px;
     text-align: center;
-    text-decoration: none;
 }
 
 .filterDiv {
@@ -64,6 +64,7 @@ li{
     margin-bottom: 10px;
     padding: 10px;
     transition: all 300ms ease-in-out;
+
 }
 
 * {

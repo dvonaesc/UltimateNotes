@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Ultimate Notes</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet"
           type="text/css" href="css/style.css"
           title="default"/>
@@ -13,10 +12,14 @@
 </head>
 <body>
 <script type="text/javascript" src="js/styleSwitcher.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+<script type="module" src="js/indexController.js"></script>
+<script type="module" src="js/note.js"></script>
+<script type="module" src="js/notesModel.js"></script>
+<script type="module" src="js/notesStorage.js"></script>
+<script src="jquery-1.11.3.min.js"></script>
+<script src="handlebars.min.js"></script>
 <a href="edit.html">
-    <button>Neuer Task</button>
+    <button>New Task</button>
 </a>
 <a href="#" onclick="setActiveStyleSheet('default');return;">Change style to default</a>
 <a href="#" onclick="setActiveStyleSheet('alternate');return;">Change style to alternative</a>
@@ -29,15 +32,15 @@
 </div>
 
 <ul id="todo"></ul>
-
 <script id="todo-template" type="text/x-handlebars-template">
-    {{#each this}}
+    {{#each notes}}
     <li>
         <h3>{{this.title}}</h3>
         <p>{{this.detail}}</p>
         <p>{{this.importance}}</p>
         <p>{{this.dueDate}}</p>
-        <button onclick="removeNote({{this.id}})">Delete</button>
+        <input type="button" value="Edit" todo-item-id="{{this.id}}">
+        <input type="button" value="Done" todo-item-id="{{this.id}}">
     </li>
     {{/each}}
 </script>
