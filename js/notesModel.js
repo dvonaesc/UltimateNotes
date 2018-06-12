@@ -43,10 +43,17 @@ class NotesModel{
         });
     }
 
-    updateNewNote(note)
+    updateNote(note)
     {
         this.notes[note.id] = note;
         notesStorage.updateNote(note);
+    }
+
+    markAsComplete(notesId)
+    {
+      let note =  this.notes[notesId];
+      note.finished = true;
+      this.updateNote(note);
     }
 
 
