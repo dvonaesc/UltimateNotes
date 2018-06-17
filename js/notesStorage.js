@@ -8,15 +8,16 @@ function loadAllNotes() {
 
 function addNewNote(note) {
     const allNotes = this.loadAllNotes();
-    note.id = Date.now();
+    note.id = allNotes.length;
     allNotes.push(note);
-    this.save(allNotes);
+    save(allNotes);
 }
+
 
 function updateNote(note) {
     let allNotes = this.loadAllNotes();
     allNotes[note.id] = note;
-    this.save(allNotes);
+    save(allNotes);
 }
 
 function save(notes) {

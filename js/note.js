@@ -1,10 +1,11 @@
 class Note {
-    constructor(title, detail, dueDate, priority) {
-        this.id = Date.now().toPrecision();
+    constructor(id,title, detail, dueDate, priority) {
+        this.id = id;
         this.title = title;
         this.detail = detail;
         this.dueDate = dueDate;
-        this.creationDate = Date.now().toLocaleString();
+        this.creationDate = Date.now();
+        this.creationDate = Date.now();
         this.finished = false;
         this.priority = priority;
     }

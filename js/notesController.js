@@ -3,54 +3,49 @@ import Note from "./note.js";
 
 ;(function ($) {
 
-/*    function filterSelection(type) {
-        switch (type) {
-            case 'dueDate':
-                model.sortNotes(model.SORT_BY_DUE_DATE);
-            case 'creationDate':
-                model.sortNotes(model.SORT_BY_CREATED_DATE);
-            case 'priority':
-                model.sortNotes(model.SORT_BY_PRIORITY);
-        }
-    }*/
 
-
-    let notesTemplateProcessor = null;
-    let editTemplateProcessor = null;
-
-    const notesModel = new model.NotesModel();
-
-    function showNotes() {
-        $("#content").html(notesTemplateProcessor({notes: notesModel.getAllNotes()}));
-    }
-
-    function showEdit() {
-        $("#content").html(editTemplateProcessor({}));
-    }
 
     $(function () {
+
+        let notesTemplateProcessor = null;
+        let editTemplateProcessor = null;
+
+        const notesModel = new model.NotesModel();
+
+        function showNotes() {
+            $("#content").html(notesTemplateProcessor({notes: notesModel.getAllNotes()}));
+        }
+
+        function showEdit(note) {
+            $("#content").html(editTemplateProcessor({note}));
+        }
+
         notesTemplateProcessor = Handlebars.compile($("#todo-template").html());
         editTemplateProcessor = Handlebars.compile($("#edit-template").html());
 
         $(document).on("click", "input[todo-item-id]", handleClick);
+        $(document).on("click", "input", handleFilterClick);
 
-
-
-        function handleClick(event) {
+        function handleFilterClick(event) {
             let elementId = event.target.id;
-            let targetElement = event.target;
-            const noteId = parseInt(targetElement.getAttribute('todo-item-id'));
-            if (!isNaN(noteId)) {
-                if (elementId === "editButton") {
-                    showEdit();
-                }
-                if (elementId === "doneButton") {
-                    notesModel.markAsComplete(noteId);
-                    showNotes();
-                }
+
+            if (elementId === "filterByCreation") {
+                notesModel.setSortMode(model.SORT_BY_CREATED_DATE);
+                showNotes();
+            }
+            if (elementId === "filterByImportance") {
+                notesModel.setSortMode(model.SORT_BY_PRIORITY);
+                showNotes();
+            }
+            if (elementId === "filterByFinish") {
+                notesModel.setSortMode(model.SORT_BY_DUE_DATE);
+                showNotes();
+            }
+            if (elementId === "newNote") {
+                showEdit(new Note());
             }
             if (elementId === "saveButton") {
-                createNewNote();
+                saveNote();
                 showNotes();
             }
             if (elementId === "cancelButton") {
@@ -58,25 +53,37 @@ import Note from "./note.js";
             }
         }
 
-       function createNewNote()
-        {
-            const title = document.getElementById('title');
-            const detail = document.getElementById('detail');
-            const dueDate = document.getElementById('due-date');
-            let newNote = new Note(title,detail,dueDate);
-            notesModel.addNewNote(newNote);
+        function handleClick(event) {
+            let elementId = event.target.id;
+            let targetElement = event.target;
+            const noteId = parseInt(targetElement.getAttribute('todo-item-id'));
+            if (!isNaN(noteId)) {
+                if (elementId === "editButton") {
+                    let note = notesModel.getNote(noteId);
+                    showEdit(note);
+                }
+                if (elementId === "doneButton") {
+                    //notesModel.markAsComplete(noteId);
+                    showNotes();
+                }
+            }
+
         }
 
-
-        $("#newNote").click(
-            function () {
-                showEdit();
-            });
-
+       function saveNote()
+        {
+            const id = $("#noteEdit").attr("note-id");
+            const title = $("#title").val();
+            const detail = $("#detail").val();
+            const dueDate = $("#due-date").val();
+            let newNote = new Note(id,title,detail,dueDate);
+            notesModel.addOrUpdateNote(newNote);
+        }
 
         showNotes();
+        window.onload = showNotes;
     });
 
-    window.onload = showNotes;
+
 })(jQuery);
 

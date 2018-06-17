@@ -31,9 +31,9 @@
 
     <h1>Todo List</h1>
     <div id="myBtnContainer">
-        <button class="btn active" onclick="filterSelection('finish')"> By Finish Date</button>
-        <button class="btn" onclick="filterSelection('creation')"> By Creation Date</button>
-        <button class="btn" onclick="filterSelection('importance')"> By Importance</button>
+        <input class="btn active" type="button" value="By Finish Date" id="filterByFinish">
+        <input class="btn" type="button" value="By Creation Date" id="filterByCreation">
+        <input class="btn" type="button" value="By Importance" id="filterByImportance">
     </div>
     <ul>
     {{#each notes}}
@@ -50,12 +50,12 @@
     </ul>
 </script>
 <script id="edit-template" type="text/x-handlebars-template">
-    <form class="grid">
+    <form class="grid" id="noteEdit" note-id="{{note.id}}" >
         <label for="title">Title</label>
-        <input id="title" name="title" placeholder="Title" required/>
+        <input id="title" name="title"  value="{{note.title}}" required/>
 
         <label for="detail">Details</label>
-        <textarea id="detail" name="detail" placeholder="Detail" required></textarea>
+        <textarea id="detail" name="detail" required>{{note.detail}}</textarea>
 
         <legend>Importance</legend>
         <div>
@@ -74,7 +74,7 @@
 
         <label for="due-date">Due to</label>
         <div>
-            <input id="due-date" name="due-date" type="date" placeholder="jjjj-mm-tt" required>
+            <input id="due-date" value="{{note.dueDate}}" name="due-date" type="date" placeholder="jjjj-mm-tt" required>
         </div>
 
         <input type="submit" id="saveButton" value="Save"/>
