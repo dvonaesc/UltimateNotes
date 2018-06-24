@@ -1,4 +1,4 @@
-import {default as notesStorage} from './notesStorage.js';
+import {default as notesStorage} from './restClient.js';
 
 const SORT_BY_DUE_DATE = 'dueDate';
 const SORT_BY_CREATED_DATE = 'createdDate';
@@ -14,58 +14,33 @@ class NotesModel {
         this.currentSort = mode;
     }
 
-    getAllNotes() {
-        let notes = notesStorage.loadAllNotes();
+   async getAllNotes() {
+        let notes = await notesStorage.loadAllNotes();
         return this.sortNotes(notes, this.currentSort);
     }
 
-    getNote(id) {
-        let notes = notesStorage.loadAllNotes();
+    async getNote(id) {
+        let notes = await notesStorage.loadAllNotes();
         return notes[id];
     }
 
 
-    addOrUpdateNote(note) {
+    async addOrUpdateNote(note) {
         if (!!note.id) {
-            notesStorage.updateNote(note);
+           await notesStorage.updateNote(note);
         }
-        else
-        {
-            notesStorage.addNewNote(note);
+        else {
+           await notesStorage.addNewNote(note);
         }
     }
 
-    // function filterFinished(showFinished)
-    // {
-    //     if(showFinished)
-    //     {
-    //         this.notes = notesStorage.loadAllNotes();
-    //     }
-    //     else
-    //     {
-    //         this.notes = filterUnFinishedNotes(notesStorage.loadAllNotes());
-    //     }
-    // }
 
-    // static filterUnFinishedNotes(notes) {
-    //     return notes.filter((entry) => {
-    //         return !entry.finished;
-    //     });
-    // }
-
-    // updateNote(note)
-    // {
-    //     var notes = this.getAllNotes();
-    //     notes[note.id] = note;
-    //     notesStorage.updateNote(note);
-    // }
-
-    // function markAsComplete(notesId)
-    //  {
-    //    let note =  this.notes[notesId];
-    //    note.finished = true;
-    //    this.updateNote(note);
-    //  }
+   async markAsComplete(notesId) {
+        let notes = await notesStorage.loadAllNotes();
+        let note = notes[notesId];
+        note.finished = true;
+       await notesStorage.updateNote(note);
+    }
 
 
     sortNotes(notes, sortBy) {

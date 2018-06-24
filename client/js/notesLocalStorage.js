@@ -6,8 +6,8 @@ function loadAllNotes() {
 }
 
 
-function addNewNote(note) {
-    const allNotes = this.loadAllNotes();
+ function addNewNote(note) {
+    const allNotes =  this.loadAllNotes();
     note.id = allNotes.length;
     allNotes.push(note);
     save(allNotes);
@@ -20,7 +20,7 @@ function updateNote(note) {
     save(allNotes);
 }
 
-function save(notes) {
+function save(note) {
     localStorage.setItem(storageKey, JSON.stringify(notes));
 }
 

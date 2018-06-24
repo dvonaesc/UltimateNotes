@@ -1,14 +1,22 @@
 {
-  "name": "Ulitmate Note",
+  "name": "Ulitmate-Note",
   "version": "1.0.0",
-  "description": "Static webserver",
+  "description": "notes application",
   "main": "server.js",
   "author": "Dario Vonaesch",
   "license": "MIT",
   "dependencies": {
+    "@std/esm": "^0.26.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "handlebars": "^4.0.11",
+    "jquery": "^3.3.1",
+    "nedb": "^1.8.0",
+    "nedb-promise": "^2.0.1",
     "serve": "^6.1.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "npm run server",
+    "server": "node -r @std/esm ./server/server.mjs"
   }
 }

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Notes</title>
+    <link rel="stylesheet"
+          type="text/css" href="css/style.css"
+          title="default"/>
+    <link rel="alternate stylesheet"
+          type="text/css" href="css/alternative.css"
+          title="alternate"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="/note.ico" type="image/x-icon" rel="icon" />
+</head>
+<script type="text/javascript" src="js/styleSwitcher.js"></script>
+<script type="module" src="js/notesController.js"></script>
+<script type="module" src="js/note.js"></script>
+<script type="module" src="js/notesModel.js"></script>
+<script type="module" src="js/notesLocalStorage.js"></script>
+<script src="jquery-1.11.3.min.js"></script>
+<script src="handlebars.min.js"></script>
+
+<button id="newNote" class="iconButton">
+    <i class="material-icons">note_add</i>
+    New Note
+</button>
+
+<a href="#" onclick="setActiveStyleSheet('default');return;">Change style to default</a>
+<a href="#" onclick="setActiveStyleSheet('alternate');return;">Change style to alternative</a>
+
+
+<div id="content"></div>
+<script id="todo-template" type="text/x-handlebars-template">
+
+    <h1>Todo List</h1>
+    <div id="myBtnContainer">
+        <input class="btn active" type="button" value="By Finish Date" id="filterByFinish">
+        <input class="btn" type="button" value="By Creation Date" id="filterByCreation">
+        <input class="btn" type="button" value="By Importance" id="filterByImportance">
+    </div>
+    <ul>
+        {{#each notes}}
+        <li>
+            <h3>{{this.title}}</h3>
+            <p>{{this.detail}}</p>
+            <p>{{this.importance}}</p>
+            <p>{{this.dueDate}}</p>
+            <p>{{this.finished}}</p>
+            <p>{{this.priority}}</p>
+            <td>{{#ifCond this.finished '===' false}}
+                <input type="button" value="Edit" id="editButton" todo-item-id="{{id}}">
+                <input type="button" value="Done" id="doneButton" todo-item-id="{{id}}">
+                {{/ifCond}}
+            </td>
+            <td>{{#ifCond this.finished '===' true}}
+                <i class="material-icons">check_circle_outline</i>
+                {{/ifCond}}
+            </td>
+        </li>
+        {{/each}}
+    </ul>
+</script>
+<script id="edit-template" type="text/x-handlebars-template">
+    <form class="grid" id="noteEdit" note-id="{{note.id}}">
+        <label for="title">Title</label>
+        <input id="title" name="title" value="{{note.title}}" required/>
+
+        <label for="detail">Details</label>
+        <textarea id="detail" name="detail" required>{{note.detail}}</textarea>
+
+        <legend>Importance</legend>
+        <div id="importance">
+            <input id="importance1" name="importance" type="radio" value="1" {{setChecked 1 note.priority}}/>
+            <label for="importance1">!</label>
+            <input id="importance2" name="importance" type="radio" value="2" {{setChecked 2 note.priority}}/>
+            <label for="importance2">!!</label>
+            <input id="importance3" name="importance" type="radio" value="3" {{setChecked 3 note.priority}}/>
+            <label for="importance3">!!!</label>
+            <input id="importance4" name="importance" type="radio" value="4" {{setChecked 4 note.priority}}/>
+            <label for="importance4">!!!!</label>
+            <input id="importance5" name="importance" type="radio" value="5" {{setChecked 5 note.priority}}/>
+            <label for="importance5">!!!!!</label>
+        </div>
+
+        <label for="due-date">Due to</label>
+        <div>
+            <input id="due-date" value="{{note.dueDate}}" name="due-date" type="date" placeholder="jjjj-mm-tt" required>
+        </div>
+
+        <button type="submit" id="saveButton" class="iconButton" value="Save">
+            <i class="material-icons">save</i>
+            Save
+        </button>
+        <button type="button" id="cancelButton" class="iconButton" value="Cancel">
+            <i type="icon" class="material-icons">cancel</i>
+            Cancel
+        </button>
+    </form>
+</script>
+</body>
+</html>
