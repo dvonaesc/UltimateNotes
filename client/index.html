@@ -42,14 +42,15 @@
         {{#each notes}}
         <li>
             <h3>{{this.title}}</h3>
+            <p>{{this._id}}</p>
             <p>{{this.detail}}</p>
             <p>{{this.importance}}</p>
             <p>{{this.dueDate}}</p>
             <p>{{this.finished}}</p>
             <p>{{this.priority}}</p>
             <td>{{#ifCond this.finished '===' false}}
-                <input type="button" value="Edit" id="editButton" todo-item-id="{{id}}">
-                <input type="button" value="Done" id="doneButton" todo-item-id="{{id}}">
+                <input type="button" value="Edit" id="editButton" todo-item-id="{{this._id}}">
+                <input type="button" value="Done" id="doneButton" todo-item-id="{{this._id}}">
                 {{/ifCond}}
             </td>
             <td>{{#ifCond this.finished '===' true}}
@@ -61,7 +62,7 @@
     </ul>
 </script>
 <script id="edit-template" type="text/x-handlebars-template">
-    <form class="grid" id="noteEdit" note-id="{{note.id}}">
+    <form class="grid" id="noteEdit" note-id="{{note._id}}">
         <label for="title">Title</label>
         <input id="title" name="title" value="{{note.title}}" required/>
 

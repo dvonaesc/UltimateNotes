@@ -20,13 +20,13 @@ class NotesModel {
     }
 
     async getNote(id) {
-        let notes = await notesStorage.loadAllNotes();
-        return notes[id];
+
+        return await notesStorage.getNote(id);
     }
 
 
     async addOrUpdateNote(note) {
-        if (!!note.id) {
+        if (!!note._id) {
            await notesStorage.updateNote(note);
         }
         else {
@@ -36,8 +36,7 @@ class NotesModel {
 
 
    async markAsComplete(notesId) {
-        let notes = await notesStorage.loadAllNotes();
-        let note = notes[notesId];
+       let note = await notesStorage.getNote(notesId);
         note.finished = true;
        await notesStorage.updateNote(note);
     }

@@ -1,12 +1,17 @@
+import Note from "./note.js";
 
 const storageKey = 'notes';
 
 function loadAllNotes() {
-    return JSON.parse(localStorage.getItem(storageKey))|| [];
+    let test = [];
+    let newNote = new Note("title", "detail", Date.now(), 5);
+    newNote._id = "12321";
+    test.push(newNote);
+    return test;
 }
 
 
- function addNewNote(note) {
+function addNewNote(note) {
     const allNotes =  this.loadAllNotes();
     note.id = allNotes.length;
     allNotes.push(note);

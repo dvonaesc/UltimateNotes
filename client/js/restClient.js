@@ -24,11 +24,21 @@ class RestClient {
         );
     }
 
+
+    async getNote(id) {
+        return await this.ajaxUtil.sendRequest(
+            'GET',
+            '/notes/' + id,
+            undefined,
+            {'Content-Type': 'application/json'}
+        );
+    }
+
     async updateNote(note) {
         return await this.ajaxUtil.sendRequest(
             'PUT',
-            '/notes/${note.id}',
-            {note: note},
+            '/notes/' + note._id,
+            note,
             {'Content-Type': 'application/json'}
         );
 

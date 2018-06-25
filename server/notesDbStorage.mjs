@@ -7,27 +7,21 @@ export class NotesDbStore {
     }
 
     async loadAllNotes() {
-        console.log("notes db store load all notes");
-        console.log("db: "+this.db);
+
         return this.db.find({});
     }
 
-    async save(notes) {
-        await this.db.insert(notes);
+    async get(id) {
+
+        return await this.db.findOne({_id: id});
     }
 
     async updateNote(note) {
-        let allNotes = await this.loadAllNotes();
-        allNotes[note.id] = note;
-        await this.save(allNotes);
+        return await this.db.update({_id: note._id}, note);
     }
 
     async addNewNote(note) {
-        const allNotes = await this.loadAllNotes();
-        note.id = allNotes.length;
-        allNotes.push(note);
-        console.log("notes db addNewNote: "+note);
-        await this.save(allNotes);
+        await this.db.insert(note);
     }
 }
 

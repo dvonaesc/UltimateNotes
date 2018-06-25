@@ -1,8 +1,7 @@
 import {default as model} from './notesModel.js';
 import Note from "./note.js";
 
-;(function ($) {
-
+(function ($) {
     Handlebars.registerHelper ("setChecked", function (value, currentValue) {
         if ( value == currentValue ) {
             return "checked";
@@ -106,30 +105,31 @@ import Note from "./note.js";
        async function handleClick(event) {
             let elementId = event.target.id;
             let targetElement = event.target;
-            const noteId = parseInt(targetElement.getAttribute('todo-item-id'));
-            if (!isNaN(noteId)) {
+           const noteId = targetElement.getAttribute('todo-item-id');
+           console.log("click with id: " + noteId);
                 if (elementId === "editButton") {
-                    let note = notesModel.getNote(noteId);
+                    let note = await notesModel.getNote(noteId);
+                    console.log("in edit button: " + noteId);
+                    console.log("note title: " + note.title);
+
                     showEdit(note);
                 }
                 if (elementId === "doneButton") {
+                    console.log("done button: " + noteId);
                     await notesModel.markAsComplete(noteId);
                     await showNotes();
                 }
-            }
-
         }
 
 
 
        async function saveNote()
         {
-            const id = $("#noteEdit").attr("note-id");
             const title = $("#title").val();
             const detail = $("#detail").val();
             const dueDate = $("#due-date").val();
             const importance =  $("input:checked").val();
-            let newNote = new Note(id,title,detail,dueDate,importance);
+            let newNote = new Note(title, detail, dueDate, importance);
            await notesModel.addOrUpdateNote(newNote);
         }
 
