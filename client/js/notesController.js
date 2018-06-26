@@ -56,7 +56,7 @@ import Note from "./note.js";
         notesTemplateProcessor = Handlebars.compile($("#todo-template").html());
         editTemplateProcessor = Handlebars.compile($("#edit-template").html());
 
-        $(document).on("click", "input[todo-item-id]", handleClick);
+        $(document).on("click", "button[todo-item-id]", handleClick);
         $(document).on("click", "input", handleFilterClick);
         $(document).on("click", "button", handleButtonClick);
 
@@ -90,6 +90,10 @@ import Note from "./note.js";
                 notesModel.setSortMode(model.SORT_BY_DUE_DATE);
                 await showNotes();
             }
+           if (elementId === "filterOutFinished") {
+               notesModel.setFilterOutFinished();
+               await showNotes();
+           }
             if (elementId === "newNote") {
                 showEdit(new Note());
             }
@@ -106,16 +110,11 @@ import Note from "./note.js";
             let elementId = event.target.id;
             let targetElement = event.target;
            const noteId = targetElement.getAttribute('todo-item-id');
-           console.log("click with id: " + noteId);
                 if (elementId === "editButton") {
                     let note = await notesModel.getNote(noteId);
-                    console.log("in edit button: " + noteId);
-                    console.log("note title: " + note.title);
-
                     showEdit(note);
                 }
                 if (elementId === "doneButton") {
-                    console.log("done button: " + noteId);
                     await notesModel.markAsComplete(noteId);
                     await showNotes();
                 }
@@ -130,6 +129,11 @@ import Note from "./note.js";
             const dueDate = $("#due-date").val();
             const importance =  $("input:checked").val();
             let newNote = new Note(title, detail, dueDate, importance);
+            const id = $("#noteEdit").attr("note-id");
+            console.log("save note id:" + id);
+            if (id !== "") {
+                newNote._id = id;
+            }
            await notesModel.addOrUpdateNote(newNote);
         }
 

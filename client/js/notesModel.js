@@ -8,15 +8,25 @@ class NotesModel {
 
     constructor() {
         this.currentSort = SORT_BY_PRIORITY;
+        this.filterOutFinished = false;
     }
 
     setSortMode(mode) {
         this.currentSort = mode;
     }
 
+    setFilterOutFinished() {
+        if (this.filterOutFinished) {
+            this.filterOutFinished = false;
+        }
+        else {
+            this.filterOutFinished = true;
+        }
+    }
+
    async getAllNotes() {
         let notes = await notesStorage.loadAllNotes();
-        return this.sortNotes(notes, this.currentSort);
+       return this.sortNotes(notes, this.currentSort, this.filterOutFinished);
     }
 
     async getNote(id) {
@@ -42,7 +52,10 @@ class NotesModel {
     }
 
 
-    sortNotes(notes, sortBy) {
+    sortNotes(notes, sortBy, filterOutFinished) {
+        if (filterOutFinished) {
+            notes = notes.filter(x => !x.finished);
+        }
         switch (sortBy) {
             case SORT_BY_DUE_DATE:
                 return this.sortByDueDate(notes);
@@ -62,7 +75,7 @@ class NotesModel {
 
     sortByPriority(notes) {
         return notes.sort((item1, item2) => {
-            return item1.priority - item2.priority
+            return item2.priority - item1.priority
         });
     }
 

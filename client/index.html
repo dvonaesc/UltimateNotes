@@ -9,8 +9,8 @@
     <link rel="alternate stylesheet"
           type="text/css" href="css/alternative.css"
           title="alternate"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="/note.ico" type="image/x-icon" rel="icon" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"/>
+    <link href="note.ico" type="image/x-icon" rel="icon"/>
 </head>
 <script type="text/javascript" src="js/styleSwitcher.js"></script>
 <script type="module" src="js/notesController.js"></script>
@@ -20,41 +20,75 @@
 <script src="jquery-1.11.3.min.js"></script>
 <script src="handlebars.min.js"></script>
 
-<button id="newNote" class="iconButton">
-    <i class="material-icons">note_add</i>
-    New Note
-</button>
-
-<a href="#" onclick="setActiveStyleSheet('default');return;">Change style to default</a>
-<a href="#" onclick="setActiveStyleSheet('alternate');return;">Change style to alternative</a>
-
-
 <div id="content"></div>
 <script id="todo-template" type="text/x-handlebars-template">
-
+    <button id="newNote" class="iconButton">
+        <i class="far fa-file"></i>
+        New Note
+    </button>
+    <a href="#" class="styleLink" onclick="setActiveStyleSheet('default');return;">Default Style</a>
+    <a href="#" class="styleLink" onclick="setActiveStyleSheet('alternate');return;">Alternative Style</a>
     <h1>Todo List</h1>
     <div id="myBtnContainer">
-        <input class="btn active" type="button" value="By Finish Date" id="filterByFinish">
-        <input class="btn" type="button" value="By Creation Date" id="filterByCreation">
-        <input class="btn" type="button" value="By Importance" id="filterByImportance">
+        <input class="filterButton" type="button" value="By Finish Date" id="filterByFinish">
+        <input class="filterButton" type="button" value="By Creation Date" id="filterByCreation">
+        <input class="filterButton" type="button" value="By Importance" id="filterByImportance">
+        <input class="filterButton" type="button" value="Show/Hide Finished" id="filterOutFinished">
     </div>
     <ul>
         {{#each notes}}
         <li>
-            <h3>{{this.title}}</h3>
-            <p>{{this._id}}</p>
+            <h1>{{this.title}}</h1>
             <p>{{this.detail}}</p>
             <p>{{this.importance}}</p>
-            <p>{{this.dueDate}}</p>
-            <p>{{this.finished}}</p>
-            <p>{{this.priority}}</p>
+            <h2>{{this.dueDate}}</h2>
+
+            {{#ifCond this.priority '>=' 1}}
+            <span class="fa fa-bolt boltChecked"></span>
+            {{else}}
+            <span class="fa fa-bolt boltUnChecked"></span>
+            {{/ifCond}}
+
+            {{#ifCond this.priority '>=' 2}}
+            <span class="fa fa-bolt boltChecked"></span>
+            {{else}}
+            <span class="fa fa-bolt boltUnChecked"></span>
+            {{/ifCond}}
+
+            {{#ifCond this.priority '>=' 3}}
+            <span class="fa fa-bolt boltChecked"></span>
+            {{else}}
+            <span class="fa fa-bolt boltUnChecked"></span>
+            {{/ifCond}}
+
+            {{#ifCond this.priority '>=' 4}}
+            <span class="fa fa-bolt boltChecked"></span>
+            {{else}}
+            <span class="fa fa-bolt boltUnChecked"></span>
+            {{/ifCond}}
+
+            {{#ifCond this.priority '>=' 5}}
+            <span class="fa fa-bolt boltChecked"></span>
+            {{else}}
+            <span class="fa fa-bolt boltUnChecked"></span>
+            {{/ifCond}}
+
+
             <td>{{#ifCond this.finished '===' false}}
-                <input type="button" value="Edit" id="editButton" todo-item-id="{{this._id}}">
-                <input type="button" value="Done" id="doneButton" todo-item-id="{{this._id}}">
+                <button type="submit" id="doneButton" class="iconButtonRightAlign" value="Done"
+                        todo-item-id="{{this._id}}">
+                    <i class="fa fa-check"></i>
+                    Done
+                </button>
+                <button type="submit" id="editButton" class="iconButtonRightAlign" value="Edit"
+                        todo-item-id="{{this._id}}">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </button>
                 {{/ifCond}}
             </td>
             <td>{{#ifCond this.finished '===' true}}
-                <i class="material-icons">check_circle_outline</i>
+                <i class="far fa-check-circle fa-2x rightAlign"></i>
                 {{/ifCond}}
             </td>
         </li>
@@ -62,41 +96,51 @@
     </ul>
 </script>
 <script id="edit-template" type="text/x-handlebars-template">
+    <h1>Todo Item</h1>
     <form class="grid" id="noteEdit" note-id="{{note._id}}">
         <label for="title">Title</label>
         <input id="title" name="title" value="{{note.title}}" required/>
 
         <label for="detail">Details</label>
-        <textarea id="detail" name="detail" required>{{note.detail}}</textarea>
+        <textarea class="textArea" id="detail" name="detail" required>{{note.detail}}</textarea>
 
         <legend>Importance</legend>
         <div id="importance">
             <input id="importance1" name="importance" type="radio" value="1" {{setChecked 1 note.priority}}/>
-            <label for="importance1">!</label>
+            <span class="fa fa-bolt boltChecked"></span>
             <input id="importance2" name="importance" type="radio" value="2" {{setChecked 2 note.priority}}/>
-            <label for="importance2">!!</label>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
             <input id="importance3" name="importance" type="radio" value="3" {{setChecked 3 note.priority}}/>
-            <label for="importance3">!!!</label>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
             <input id="importance4" name="importance" type="radio" value="4" {{setChecked 4 note.priority}}/>
-            <label for="importance4">!!!!</label>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
             <input id="importance5" name="importance" type="radio" value="5" {{setChecked 5 note.priority}}/>
-            <label for="importance5">!!!!!</label>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
+            <span class="fa fa-bolt boltChecked"></span>
         </div>
 
         <label for="due-date">Due to</label>
         <div>
             <input id="due-date" value="{{note.dueDate}}" name="due-date" type="date" placeholder="jjjj-mm-tt" required>
         </div>
-
-        <button type="submit" id="saveButton" class="iconButton" value="Save">
-            <i class="material-icons">save</i>
-            Save
-        </button>
         <button type="button" id="cancelButton" class="iconButton" value="Cancel">
-            <i type="icon" class="material-icons">cancel</i>
+            <i class="fa fa-times"></i>
             Cancel
         </button>
+        <button type="submit" id="saveButton" class="iconButton" value="Save">
+            <i class="fa fa-save"></i>
+            Save
+        </button>
+
     </form>
 </script>
-</body>
 </html>

@@ -10,6 +10,10 @@ app.use(express.static(path.resolve('client')));
 app.use(bodyParser.json());
 app.use("/notes", notesRoutes);
 
+app.get("/", function (req, res) {
+    res.sendFile("/client/index.html", {root: __dirname + '/client/'});
+});
+
 
 app.use((err, req, res, next) => {
     res.status(500).send('Error: ' + err)
