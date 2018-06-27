@@ -1,3 +1,11 @@
-# UltimateNotes
+# Notes
+Sample application to practice html/css/js
 
-Code base for Projekt1
+## Installation
+
+```
+$ npm install
+$ npm start
+```
+
+Server running at http://127.0.0.1:3001/
