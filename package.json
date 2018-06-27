@@ -15,6 +15,7 @@
     "serve": "^6.1.0"
   },
   "scripts": {
+    "check": "eslint client/",
     "start": "npm run server",
     "server": "node -r @std/esm ./server/server.mjs"
   },

@@ -16,11 +16,43 @@
 <script type="module" src="js/notesController.js"></script>
 <script type="module" src="js/note.js"></script>
 <script type="module" src="js/notesModel.js"></script>
-<script type="module" src="js/notesLocalStorage.js"></script>
 <script src="jquery-1.11.3.min.js"></script>
 <script src="handlebars.min.js"></script>
+<script src="js/handleBarsHelpers.js"></script>
+
 
 <div id="content"></div>
+<script id="filter-template" type="text/x-handlebars-template">
+    {{#ifCond model.currentSort '==' "dueDate"}}
+    <input class="filterButtonActive" type="button" value="Finish Date">
+    {{else}}
+    <input class="filterButtonNotActive" type="button" value="Finish Date" id="filterByFinish">
+    {{/ifCond}}
+    {{#ifCond model.currentSort '==' "createdDate"}}
+    <input class="filterButtonActive" type="button" value="Creation Date">
+    {{else}}
+    <input class="filterButtonNotActive" type="button" value="Creation Date" id="filterByCreation">
+    {{/ifCond}}
+    {{#ifCond model.currentSort '==' "priority"}}
+    <input class="filterButtonActive" type="button" value="Importance">
+    {{else}}
+    <input class="filterButtonNotActive" type="button" value="Importance" id="filterByImportance">
+    {{/ifCond}}
+
+    {{#ifCond model.filterOutFinished '==' true}}
+    <button id="filterOutFinishedOff" class="iconButtonTransparent">
+        <i class="fas fa-toggle-off"></i>
+        Finished
+    </button>
+    {{else}}
+    <button id="filterOutFinishedOn" class="iconButtonTransparent">
+        <i class="fas fa-toggle-on"></i>
+        Finished
+    </button>
+    {{/ifCond}}
+
+
+</script>
 <script id="todo-template" type="text/x-handlebars-template">
     <button id="newNote" class="iconButton">
         <i class="far fa-file"></i>
@@ -29,12 +61,7 @@
     <a href="#" class="styleLink" onclick="setActiveStyleSheet('default');return;">Default Style</a>
     <a href="#" class="styleLink" onclick="setActiveStyleSheet('alternate');return;">Alternative Style</a>
     <h1>Todo List</h1>
-    <div id="myBtnContainer">
-        <input class="filterButton" type="button" value="By Finish Date" id="filterByFinish">
-        <input class="filterButton" type="button" value="By Creation Date" id="filterByCreation">
-        <input class="filterButton" type="button" value="By Importance" id="filterByImportance">
-        <input class="filterButton" type="button" value="Show/Hide Finished" id="filterOutFinished">
-    </div>
+    <div id="filterButtonContainer"></div>
     <ul>
         {{#each notes}}
         <li>

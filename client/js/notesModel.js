@@ -16,12 +16,7 @@ class NotesModel {
     }
 
     setFilterOutFinished() {
-        if (this.filterOutFinished) {
-            this.filterOutFinished = false;
-        }
-        else {
-            this.filterOutFinished = true;
-        }
+        this.filterOutFinished = !this.filterOutFinished;
     }
 
    async getAllNotes() {
@@ -81,7 +76,7 @@ class NotesModel {
 
     sortByCreationDate(notes) {
         return notes.sort((item1, item2) => {
-            return new Date(item1.creationDate) - new Date(item2.dueDate);
+            return new Date(item2.creationDate) - new Date(item1.dueDate);
         });
     }
 

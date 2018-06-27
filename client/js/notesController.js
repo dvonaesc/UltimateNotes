@@ -1,52 +1,20 @@
 import {default as model} from './notesModel.js';
 import Note from "./note.js";
 
+
 (function ($) {
-    Handlebars.registerHelper ("setChecked", function (value, currentValue) {
-        if ( value == currentValue ) {
-            return "checked";
-        } else {
-            return "";
-        }
-    });
-
-    Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
-
-        switch (operator) {
-            case '==':
-                return (v1 == v2) ? options.fn(this) : options.inverse(this);
-            case '===':
-                return (v1 === v2) ? options.fn(this) : options.inverse(this);
-            case '!=':
-                return (v1 != v2) ? options.fn(this) : options.inverse(this);
-            case '!==':
-                return (v1 !== v2) ? options.fn(this) : options.inverse(this);
-            case '<':
-                return (v1 < v2) ? options.fn(this) : options.inverse(this);
-            case '<=':
-                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-            case '>':
-                return (v1 > v2) ? options.fn(this) : options.inverse(this);
-            case '>=':
-                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-            case '&&':
-                return (v1 && v2) ? options.fn(this) : options.inverse(this);
-            case '||':
-                return (v1 || v2) ? options.fn(this) : options.inverse(this);
-            default:
-                return options.inverse(this);
-        }
-    });
 
     $(function () {
 
         let notesTemplateProcessor = null;
         let editTemplateProcessor = null;
-
+        let filterTemplateProcessor = null;
         const notesModel = new model.NotesModel();
 
-       async function showNotes() {
+        async function showNotes() {
             $("#content").html(notesTemplateProcessor({notes: await notesModel.getAllNotes()}));
+            $("#filterButtonContainer").html(filterTemplateProcessor({model: notesModel}));
+
         }
 
         function showEdit(note) {
@@ -55,12 +23,13 @@ import Note from "./note.js";
 
         notesTemplateProcessor = Handlebars.compile($("#todo-template").html());
         editTemplateProcessor = Handlebars.compile($("#edit-template").html());
+        filterTemplateProcessor = Handlebars.compile($("#filter-template").html());
 
         $(document).on("click", "button[todo-item-id]", handleClick);
         $(document).on("click", "input", handleFilterClick);
         $(document).on("click", "button", handleButtonClick);
 
-       async function handleButtonClick(event) {
+        async function handleButtonClick(event) {
             let elementId = event.target.id;
 
             if (elementId === "newNote") {
@@ -71,11 +40,16 @@ import Note from "./note.js";
                 await showNotes();
             }
             if (elementId === "cancelButton") {
-               await showNotes();
+                await showNotes();
+            }
+
+            if (elementId === "filterOutFinishedOn" || elementId === "filterOutFinishedOff") {
+                notesModel.setFilterOutFinished();
+                await showNotes();
             }
         }
 
-       async function handleFilterClick(event) {
+        async function handleFilterClick(event) {
             let elementId = event.target.id;
 
             if (elementId === "filterByCreation") {
@@ -84,16 +58,12 @@ import Note from "./note.js";
             }
             if (elementId === "filterByImportance") {
                 notesModel.setSortMode(model.SORT_BY_PRIORITY);
-               await showNotes();
+                await showNotes();
             }
             if (elementId === "filterByFinish") {
                 notesModel.setSortMode(model.SORT_BY_DUE_DATE);
                 await showNotes();
             }
-           if (elementId === "filterOutFinished") {
-               notesModel.setFilterOutFinished();
-               await showNotes();
-           }
             if (elementId === "newNote") {
                 showEdit(new Note());
             }
@@ -106,28 +76,26 @@ import Note from "./note.js";
             }
         }
 
-       async function handleClick(event) {
+        async function handleClick(event) {
             let elementId = event.target.id;
             let targetElement = event.target;
-           const noteId = targetElement.getAttribute('todo-item-id');
-                if (elementId === "editButton") {
+            const noteId = targetElement.getAttribute('todo-item-id');
+            if (elementId === "editButton") {
                     let note = await notesModel.getNote(noteId);
-                    showEdit(note);
-                }
-                if (elementId === "doneButton") {
+                showEdit(note);
+            }
+            if (elementId === "doneButton") {
                     await notesModel.markAsComplete(noteId);
-                    await showNotes();
-                }
+                await showNotes();
+            }
         }
 
 
-
-       async function saveNote()
-        {
+        async function saveNote() {
             const title = $("#title").val();
             const detail = $("#detail").val();
             const dueDate = $("#due-date").val();
-            const importance =  $("input:checked").val();
+            const importance = $("input:checked").val();
             let newNote = new Note(title, detail, dueDate, importance);
             const id = $("#noteEdit").attr("note-id");
             console.log("save note id:" + id);
